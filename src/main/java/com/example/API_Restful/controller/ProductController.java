@@ -5,6 +5,7 @@ import com.example.API_Restful.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +31,11 @@ public class ProductController {
     public ProductModel getProductById(
             @Parameter(description = "ID do produto a ser encontrado", required = true)
             @PathVariable Long id) {
-        return productService.getProductModelById(id);
+        ProductModel productModel = productService.getProductModelById(id);
+        if (productModel == null){
+            throw new EntityNotFoundException("Usuário com ID " + id + "não encontrado")  ;
+        }
+        return productModel;
     }
 
     @Operation(summary = "Salvar novo produto", description = "Cria um novo produto com os dados fornecidos")
