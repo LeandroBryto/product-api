@@ -43,6 +43,12 @@ public class ProductController {
     public ProductModel saveProduct(
             @Parameter(description = "Informações do produto a ser salvo", required = true)
             @RequestBody ProductModel productModel) {
+        if (productModel.getNome() == null || productModel.getNome().isEmpty()){
+            throw new IllegalArgumentException("O nome do usuário é obrigatório.");
+        }
+        if (productModel.getPrice() == null || productModel.getPrice() <= 0){
+            throw new IllegalArgumentException("O preço deve ser maior que zero.") ;
+        }
         return productService.saveProductModel(productModel);
     }
 
@@ -53,6 +59,12 @@ public class ProductController {
             @PathVariable Long id,
             @Parameter(description = "Dados atualizados do produto", required = true)
             @RequestBody ProductModel productModel) {
+        if (productModel.getNome() == null || productModel.getNome().isEmpty()){
+            throw new IllegalArgumentException("O nome do usuário é obrigatório");
+        }
+        if (productModel.getPrice() == null || productModel.getPrice() <= 0){
+            throw new IllegalArgumentException("O preço dever ser maior que zero.");
+        }
         productModel.setId(id);
         return productService.saveProductModel(productModel);
     }
